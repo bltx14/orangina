@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CHRISTMAS RUSH</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link rel="stylesheet" href="css/orientation_utils.css" type="text/css">
+    <link rel="stylesheet" href="css/ios_fullscreen.css" type="text/css">
+    <link rel="shortcut icon" type="image/x-icon" href="#">
+
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js?v=2"></script>
+    <script type="text/javascript" src="js/createjs.min.js?v=2"></script>
+    <script type="text/javascript" src="js/howler.min.js?v=2"></script>
+    <script type="text/javascript" src="js/main.js?v=2"></script>
+
+
+</head>
+
+<body ondragstart="return false;" ondrop="return false;" class="visible">
+    <div style="position: fixed; background-color: transparent; top: 0px; left: 0px; width: 100%; height: 100%"></div>
+    <script>
+        $(document).ready(function () {
+            var oMain = new CMain({
+                fullscreen: true,         //SET THIS TO FALSE IF YOU DON'T WANT TO SHOW FULLSCREEN BUTTON
+                check_orientation: true,  //SET TO FALSE IF YOU DON'T WANT TO SHOW ORIENTATION ALERT ON MOBILE DEVICES
+                audio_enable_on_startup: false,  //ENABLE/DISABLE AUDIO WHEN GAME STARTS 
+                increase_step_speed_every: 15000, //SET THE TIME WHEN MUST BE TRIGGERED THE NEXT STEP SPEED, OBJECTS OCCURRANCE AND SPAWN TIME IN MILLISECONDS, 
+                steps_speed: [10, 12, 15, 17, 20], //SET THE STEPS SPEEDS OF GAME
+                //SET RANGE OF RANDOM SPAWN TIME OF THE STEPS
+                objects_spawn_time: [
+                    { min: 500, max: 1000 }, //STEP 1
+                    { min: 400, max: 900 },  //STEP 2
+                    { min: 350, max: 700 },  //STEP 3
+                    { min: 300, max: 600 },  //STEP 4
+                    { min: 300, max: 600 }   //STEP 5
+                ],
+                //SET OBJECTS OCCURRANCE OF EVERY STEPS OCCURS
+                objects_occurance: [
+                    [17, 17, 22, 5, 4, 1, 16, 3, 3, 10], //STEP 1
+                    [16, 15, 20, 7, 6, 3, 14, 4, 4, 9],  //STEP 2
+                    [14, 16, 20, 7, 8, 5, 15, 5, 5, 7],  //STEP 3
+                    [12, 12, 18, 8, 8, 7, 15, 6, 6, 6],  //STEP 4
+                    [11, 11, 13, 9, 9, 10, 12, 8, 8, 5]  //STEP 5
+                ]
+            });
+
+
+            $(oMain).on("start_session", function (evt) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeStartSession();
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("end_session", function (evt) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeEndSession();
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("restart_level", function (evt, iLevel) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeRestartLevel({ level: iLevel });
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("save_score", function (evt, iScore, szMode) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeSaveScore({ score: iScore, mode: szMode });
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("start_level", function (evt, iLevel) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeStartLevel({ level: iLevel });
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("end_level", function (evt, iLevel) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeEndLevel({ level: iLevel });
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("show_interlevel_ad", function (evt) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeShowInterlevelAD();
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            $(oMain).on("share_event", function (evt, iScore) {
+                if (getParamValue('ctl-arcade') === "true") {
+                    parent.__ctlArcadeShareEvent({
+                        img: TEXT_SHARE_IMAGE,
+                        title: TEXT_SHARE_TITLE,
+                        msg: TEXT_SHARE_MSG1 + iScore + TEXT_SHARE_MSG2,
+                        msg_share: TEXT_SHARE_SHARE1 + iScore + TEXT_SHARE_SHARE1
+                    });
+                }
+                //...ADD YOUR CODE HERE EVENTUALLY
+            });
+
+            if (isIOS()) {
+                setTimeout(function () { sizeHandler(); }, 200);
+            } else { sizeHandler(); }
+
+        });
+
+    </script>
+
+    <div class="check-fonts">
+        <p class="check-font-1">dimboregular</p>
+    </div>
+
+    <canvas id="canvas" class="ani_hack" width="1920" height="1080"
+        style="width: 1500px; height: 844px; top: 44.5px; left: -187.5px;"> </canvas>
+    <div data-orientation="landscape" class="orientation-msg-container">
+        <p class="orientation-msg-text">Please rotate your device</p>
+    </div>
+    <div id="block_game"
+        style="position: fixed; background-color: transparent; top: 0px; left: 0px; width: 100%; height: 100%; display: none;">
+    </div>
+
+
+
+</body>
+
+</html>
